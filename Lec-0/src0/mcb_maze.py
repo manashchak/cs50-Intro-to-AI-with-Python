@@ -186,7 +186,8 @@ class Maze():
                 actions.reverse()
                 cells.reverse()
                 self.solution = (actions, cells)
-                #* Few final frames to pause on the solutions.
+
+                #* >>> Few final frames to pause on the solutions.
                 if animate:
                     for _ in range(10):
                         self.output_image("_frame.png", show_solution=True, show_explored=True)
