@@ -21,7 +21,7 @@ def load_data(directory):
     """
     # Load people
     with open(f"{directory}/people.csv", encoding="utf-8") as f:
-        print(f"Loading... {directory}/people.csv")
+        print(f"Reading... {directory}/people.csv")
         reader = csv.DictReader(f)
         for row in reader:
             people[row["id"]] = {
@@ -36,6 +36,7 @@ def load_data(directory):
 
     # Load movies
     with open(f"{directory}/movies.csv", encoding="utf-8") as f:
+        print(f"Reading... {directory}/movies.csv")
         reader = csv.DictReader(f)
         for row in reader:
             movies[row["id"]] = {
@@ -46,6 +47,7 @@ def load_data(directory):
 
     # Load stars
     with open(f"{directory}/stars.csv", encoding="utf-8") as f:
+        print(f"Reading... {directory}/stars.csv")
         reader = csv.DictReader(f)
         for row in reader:
             try:
@@ -59,7 +61,7 @@ def load_data(directory):
 
 def main():
     if len(sys.argv) > 2:
-        sys.exit("Usage: python degrees.py [directory]")
+        sys.exit("[WARNING] Usage: python degrees.py [directory]")
     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
     # Load data from files into memory
@@ -96,9 +98,37 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-
     # TODO
-    raise NotImplementedError
+    print("_____________________________")
+    source_id = names.get(source.lower())
+    target_id = names.get(target.lower())
+
+    start = Node(state=source_id, parent=None, action=None)
+    frontier = StackFrontier()
+    frontier.add(start)
+    explored = set()
+    while not frontier.empty():
+        node = frontier.remove()
+        if node.state == target_id:
+            path = []
+            while node.parent is not None:
+                path.append((node.action, node.state))
+                node = node.parent
+            path.reverse()
+            return path
+
+        explored.add(node.state)
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+                frontier.add(child)
+    
+    # If we reach here, no path was found
+    print("No path found.") 
+    print(source_id)
+    print(target_id)
+    
+    #raise NotImplementedError
 
 
 def person_id_for_name(name):

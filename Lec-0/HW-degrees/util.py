@@ -6,6 +6,7 @@ class Node():
 
 
 class StackFrontier():
+    """A stack-based frontier for search algorithms. LIFO order."""
     def __init__(self):
         self.frontier = []
 
@@ -28,7 +29,7 @@ class StackFrontier():
 
 
 class QueueFrontier(StackFrontier):
-
+    """Inherits from StackFrontier but uses FIFO order for nodes."""
     def remove(self):
         if self.empty():
             raise Exception("empty frontier")
